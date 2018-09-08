@@ -5,10 +5,10 @@ prompt_setup_devon() {
 	ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 	# Calculate distance from home
-	CURRENT_WORKING_DIR="%3~"
+	CURRENT_WORKING_DIR="%0~"
 
 	base_prompt='%{$fg[green]%}%n%{$reset_color%}%{$fg[cyan]%}@%{$reset_color%}%{$fg[yellow]%}%m%{$reset_color%}%{$fg[red]%}:%{$reset_color%}%{$fg[cyan]%}${CURRENT_WORKING_DIR}%{$reset_color%}%{$fg[red]%}%{$reset_color%}'
-	post_prompt='%{$fg[cyan]%} ⇒%{$reset_color%} '
+	post_prompt='%{$fg[cyan]%}⇒%{$reset_color%} '
 
 	base_prompt_nocolor=$(echo "$base_prompt" | perl -pe "s/%\{[^}]+\}//g")
 	post_prompt_nocolor=$(echo "$post_prompt" | perl -pe "s/%\{[^}]+\}//g")
@@ -21,13 +21,14 @@ prompt_devon_precmd() {
 	local gitinfo_nocolor=$(echo "$gitinfo" | perl -pe "s/%\{[^}]+\}//g")
 	local exp_nocolor="$(print -P \"$base_prompt_nocolor$gitinfo_nocolor$post_prompt_nocolor\")"
 	local prompt_length=${#exp_nocolor}
-	local DATE="[ %{$fg[green]%}%D{%y/%m/%f} | %D{%H:%M:%S}%{$reset_color%} ]"
+	local DATE="[%{$fg[green]%}%D{%y/%m/%f} | %D{%H:%M:%S}%{$reset_color%}]"
 	local nl=""
 	if [[ -n $gitinfo ]]; then
 		gitinfo=" [${gitinfo}]"
 	fi
+	nl=$'\n%{\r%}'
 	PROMPT="$base_prompt$gitinfo$nl$post_prompt"
-	RPROMPT="${DATE}"
+	# RPROMPT="${DATE}"
 }
 
 prompt_setup_devon
